@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from './pages/Profile';
+
+import "./stylesheets/allignments.css";
+import "./stylesheets/theme.css";
+import "./stylesheets/sizes.css";
+import "./stylesheets/custom-components.css";
+import "./stylesheets/form-elements.css";
+import ProtectedRoute from './components/ProtectedRoute';
+import Loader from "./components/Loader";
+
+import { useSelector } from 'react-redux';
+import BookDescription from './pages/BookDescription';
 
 function App() {
+  const { loading } = useSelector((state) => state.loaders);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {loading && <Loader />}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/book/:id" element={<ProtectedRoute><BookDescription /></ProtectedRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
